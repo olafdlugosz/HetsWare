@@ -52,7 +52,7 @@
                 </TransformGroup>
             </RadioButton.RenderTransform>
         </RadioButton>
-        <RadioButton x:Name="LinearRadioButton" Content="Linear (Fn = n + n)" HorizontalAlignment="Left" Margin="26,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="15" Width="123">
+        <RadioButton x:Name="LinearRadioButton" Content="Linear Polynomial (Fn = n + n)" HorizontalAlignment="Left" Margin="26,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="15" Width="183">
             <RadioButton.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

@@ -140,7 +140,7 @@ namespace HetsWare
         static void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             for (int i = 0; i < 150; i++) {                
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(1.5); //<--- 60 mails per minute, rememeber?
+                TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, rememeber?
                 Thread.Sleep(interval);
             }
         }
