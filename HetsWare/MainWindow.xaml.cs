@@ -52,16 +52,16 @@ namespace HetsWare
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
             
             BackgroundWorker worker = sender as BackgroundWorker;
-            List<object> genericlist = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
-            string sourcemail = genericlist[0].ToString();
-            string password = genericlist[1].ToString();
-            string targetmail = genericlist[2].ToString();
-            string mailtitle = genericlist[3].ToString();
-            string mailbody = genericlist[4].ToString();
-            bool defaultRecursion = Convert.ToBoolean(genericlist[5]); // <-- Radiobutton Boolean values.
-            bool fibonacci = Convert.ToBoolean(genericlist[6]);
-            bool linear = Convert.ToBoolean(genericlist[7]);
-            bool nuke = Convert.ToBoolean(genericlist[8]);
+            List<object> asyncThreadPropertyList = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
+            string sourcemail = asyncThreadPropertyList[0].ToString();
+            string password = asyncThreadPropertyList[1].ToString();
+            string targetmail = asyncThreadPropertyList[2].ToString();
+            string mailtitle = asyncThreadPropertyList[3].ToString();
+            string mailbody = asyncThreadPropertyList[4].ToString();
+            bool defaultRecursion = Convert.ToBoolean(asyncThreadPropertyList[5]); // <-- Radiobutton Boolean values.
+            bool fibonacci = Convert.ToBoolean(asyncThreadPropertyList[6]);
+            bool linear = Convert.ToBoolean(asyncThreadPropertyList[7]);
+            bool nuke = Convert.ToBoolean(asyncThreadPropertyList[8]);
 
             if (worker.CancellationPending == true) {
                 e.Cancel = true;
