@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HetsWare"
         mc:Ignorable="d"
-        Title="HetsWare" Height="415.57" Width="732.341">
-    <Grid>
+        Title="HetsWare" Height="355.317" Width="749.177">
+    <Grid Margin="0,0,2,0" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="-0.076"/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="0*"/>
@@ -15,7 +23,7 @@
         <TextBox x:Name="TargetMailTextBox" HorizontalAlignment="Left" Height="23" Margin="438,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
         <TextBox x:Name="MailTitleTextBox" HorizontalAlignment="Left" Height="23" Margin="438,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
         <TextBox x:Name="MailBodyTextBox" HorizontalAlignment="Left" Height="88" Margin="438,162,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
-        <Button x:Name="DeployButton" Content="Börja Hetsa!" HorizontalAlignment="Left" Margin="557,289,0,0" VerticalAlignment="Top" Width="135" Height="30" Click="DeployButton_Click" ClickMode="Press"/>
+        <Button x:Name="DeployButton" Content="Börja Hetsa!" HorizontalAlignment="Left" Margin="559,268,0,0" VerticalAlignment="Top" Width="165" Height="30" Click="DeployButton_Click" ClickMode="Press"/>
         <Label x:Name="SourceMailLabel" Content="Your gmail:" HorizontalAlignment="Left" Margin="338,47,0,0" VerticalAlignment="Top" Width="74" Height="26"/>
         <Label x:Name="PasswordLabel" Content="Your Password:" HorizontalAlignment="Left" Margin="338,78,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <Label x:Name="TargetMailLabel" Content="Target e-mail:" HorizontalAlignment="Left" Margin="338,111,0,0" VerticalAlignment="Top" Height="26" Width="82"/>
@@ -23,8 +31,8 @@
         <Label x:Name="MailBodyLabel" Content="Message Body:" HorizontalAlignment="Left" Margin="338,162,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <PasswordBox x:Name="PasswordTextBox" HorizontalAlignment="Left" Margin="438,78,0,0" VerticalAlignment="Top" Width="286" Height="23"/>
         <Label x:Name="HeaderLabel" Content="Turn on Allow Less Secure Apps at https://myaccount.google.com/lesssecureapps" HorizontalAlignment="Left" Margin="276,10,0,0" VerticalAlignment="Top" Width="448" Height="32"/>
-        <TextBlock x:Name="DisplayTextBlock" HorizontalAlignment="Left" Margin="276,289,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" Height="30"/>
-        <RadioButton x:Name="DefaultRadioButton" Content="Default (n + 1)" HorizontalAlignment="Left" Margin="26,73,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="15" Width="100">
+        <TextBlock x:Name="DisplayTextBlock" HorizontalAlignment="Left" Margin="30,279,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" Height="30"/>
+        <RadioButton x:Name="DefaultRadioButton" Content="Default (n + 1)" HorizontalAlignment="Left" Margin="26,73,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="15" Width="100" IsChecked="True">
             <RadioButton.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
