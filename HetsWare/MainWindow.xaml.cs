@@ -35,6 +35,7 @@ namespace HetsWare
         public MainWindow() {
             InitializeComponent();
             InitializeBackgroundWorker();
+            //TODO Implement cancelation...
             backgroundWorker1.WorkerSupportsCancellation = true;
         }
         /// <summary>
@@ -64,8 +65,7 @@ namespace HetsWare
             bool nuke = Convert.ToBoolean(asyncThreadPropertyList[8]);
 
             if (worker.CancellationPending == true) {
-                e.Cancel = true;
-                
+                e.Cancel = true;              
             }
             else {
                 if (defaultRecursion == true) {
@@ -109,7 +109,7 @@ namespace HetsWare
                 return 1;
             for (int i = 0; i < n; i++) {
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(1.5); //<---Don't change this.. Gmail allows only 60 e-mails per minute.
+                TimeSpan interval = TimeSpan.FromMinutes(3); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
             }                       
             TimeSpan timeout = TimeSpan.FromDays(1);   //change timeout if you want to...
@@ -117,10 +117,10 @@ namespace HetsWare
             return DefaultRecursion(n + 1, SourceMail, Password, TargetMail, MailTitle, MailBody);
         }
         private void Fibonacci(int a, int b, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
-            //Use 1, 1, 1, 12 because 12th call = 144 e-mails.
+            //Use 1, 1, 1, 12 when invoking because 12th call = 144 e-mails.
             for (int i = 0; i < a; i++) {
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(2);  //<--Don't change this.. Gmail allows only 60 e-mails per minute.
+                TimeSpan interval = TimeSpan.FromMinutes(3);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
             }
             TimeSpan timeout = TimeSpan.FromDays(1);  //change timeout if you want to...
@@ -132,6 +132,8 @@ namespace HetsWare
                 return 1;
             for (int i = 0; i < n; i++) {
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
+                TimeSpan interval = TimeSpan.FromMinutes(3); //<--- Prevents going over the 60 per minute limit. If you change this, don't go under 1.5seconds.
+                Thread.Sleep(interval);
             }
             TimeSpan timeout = TimeSpan.FromDays(1);
             Thread.Sleep(timeout);
@@ -140,7 +142,7 @@ namespace HetsWare
         private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             for (int i = 0; i < 150; i++) {                
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, rememeber?
+                TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, remember?
                 Thread.Sleep(interval);
             }
         }
