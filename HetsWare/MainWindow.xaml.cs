@@ -33,20 +33,19 @@ namespace HetsWare
         private BackgroundWorker backgroundWorker1 = new BackgroundWorker();
 
         public MainWindow() {
-            backgroundWorker1 = new BackgroundWorker();
             InitializeComponent();
             InitializeBackgroundWorker();
             backgroundWorker1.WorkerSupportsCancellation = true;
         }
         /// <summary>
-        /// Method for adding events handlers to the background worker...
+        /// Method for adding event handlers to the background worker...
         /// </summary>
         private void InitializeBackgroundWorker() {
             backgroundWorker1.DoWork +=
                 new DoWorkEventHandler(backgroundWorker1_DoWork);
         }
         /// <summary>
-        /// Main method for backgroundworkers asynchronious work. It handles the transit of information between threads.
+        /// Main method for backgroundworkers asynchronous work. It handles the transit of information between threads.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -66,6 +65,7 @@ namespace HetsWare
 
             if (worker.CancellationPending == true) {
                 e.Cancel = true;
+                
             }
             else {
                 if (defaultRecursion == true) {
@@ -93,8 +93,13 @@ namespace HetsWare
             var client = new SmtpClient("smtp.gmail.com", 587) {
                 Credentials = new NetworkCredential(SourceMail, Password),
                 EnableSsl = true               
-            };        
-                client.Send(SourceMail, TargetMail, MailTitle, MailBody);            
+            };
+            try {
+                client.Send(SourceMail, TargetMail, MailTitle, MailBody);
+            } catch (Exception) {
+
+                MessageBoxResult result = MessageBox.Show("Error...Have you enabled: Allow less secure apps in your gmail!?", "Confirmation");
+            }           
         }
         //
         //HetsMode Methods:
@@ -135,7 +140,7 @@ namespace HetsWare
         static void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody) {
             for (int i = 0; i < 150; i++) {                
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(1.5);
+                TimeSpan interval = TimeSpan.FromMinutes(1.5); //<--- 60 mails per minute, rememeber?
                 Thread.Sleep(interval);
             }
         }
