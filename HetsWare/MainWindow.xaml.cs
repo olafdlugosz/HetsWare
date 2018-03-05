@@ -50,18 +50,23 @@ namespace HetsWare
             backgroundWorker1.ProgressChanged +=
                 new ProgressChangedEventHandler(
             backgroundWorker1_ProgressChanged);
-        }
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
 
-            resultLabel.Content = ("Numbers of e-mails per iteration: " + e.ProgressPercentage.ToString());
-          //  TotalDisplayLabel.Content
         }
         /// <summary>
-        /// Main method for backgroundworkers asynchronous work. It handles the transit of information between threads.
+        /// Event handler for reporting progress...
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+                               
+            resultLabel.Content = ("Numbers of e-mails per iteration: " + e.ProgressPercentage.ToString());
+            TotalDisplayLabel.Content = ("Total number of e-mails sent: " + e.UserState.ToString());
+        }
+
+            /// <summary>
+            /// Main method for backgroundworkers asynchronous work. It handles the transit of information between threads.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
             
             BackgroundWorker worker = sender as BackgroundWorker;
             List<object> asyncThreadPropertyList = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
@@ -82,13 +87,13 @@ namespace HetsWare
             }
             else {
                 if (defaultRecursion == true) {
-                    DefaultRecursion(1, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
+                    DefaultRecursion(1, 0, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
                 }
                 if(fibonacci == true) {
-                    Fibonacci(1, 1, 1, 12, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
+                    Fibonacci(1, 1, 0, 1, 12, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
                 }
                 if(linear == true) {
-                    Linear(1, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
+                    Linear(1,0, sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
                 }
                 if(nuke == true) {
                     Nuke(sourcemail, password, targetmail, mailtitle, mailbody, worker, e);
@@ -117,11 +122,13 @@ namespace HetsWare
         //
         //HetsMode Methods:
         //
-        private int DefaultRecursion(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private int DefaultRecursion(int n,int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             if (n == 0 && n == 150) //<---stops sending when 150 e-mails are reached.
                 return 1;
-            worker1.ReportProgress(n);
+            
             for (int i = 0; i < n; i++) {
+                total += n;
+                worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromMinutes(3); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
@@ -129,36 +136,41 @@ namespace HetsWare
             
             TimeSpan timeout = TimeSpan.FromDays(1);   //change timeout if you want to...
             Thread.Sleep(timeout);
-            return DefaultRecursion(n + 1, SourceMail, Password, TargetMail, MailTitle, MailBody,  worker1, e);
+            return DefaultRecursion(n + 1,total, SourceMail, Password, TargetMail, MailTitle, MailBody,  worker1, e);
         }
-        private void Fibonacci(int a, int b, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private void Fibonacci(int a, int b,int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             //Use 1, 1, 1, 12 when invoking because 12th call = 144 e-mails.
             for (int i = 0; i < a; i++) {
-                worker1.ReportProgress(a);
+                total += a;
+                worker1.ReportProgress(a, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromMinutes(3);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
-                Thread.Sleep(interval);
+                Thread.Sleep(interval);                
             }
             TimeSpan timeout = TimeSpan.FromDays(1);  //change timeout if you want to...
             Thread.Sleep(timeout);
-            if (counter < maxNumber) Fibonacci(b, a + b, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            if (counter < maxNumber) Fibonacci(b, a + b, total, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
-        private int Linear(int n, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private int Linear(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+            
             if (n == 0 && n == 150)//<---stops sending when 150 e-mails are reached.
                 return 1;
             for (int i = 0; i < n; i++) {
-                worker1.ReportProgress(n);
+                total += n;
+                worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromMinutes(3); //<--- Prevents going over the 60 per minute limit. If you change this, don't go under 1.5seconds.
                 Thread.Sleep(interval);
             }
-            TimeSpan timeout = TimeSpan.FromDays(1);
+            TimeSpan timeout = TimeSpan.FromDays(1); //change timeout if you want to...
             Thread.Sleep(timeout);
-            return Linear(n + n, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            return Linear(n + n, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
         private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+            int counter = 0;
             for (int i = 0; i < 150; i++) {
-                worker1.ReportProgress(i+1);
+                counter++;                
+                worker1.ReportProgress(i+1, counter);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, remember?
                 Thread.Sleep(interval);
