@@ -36,8 +36,7 @@ namespace HetsWare
             InitializeComponent();
             InitializeBackgroundWorker();
             //TODO Implement cancelation button...
-           // backgroundWorker1.WorkerSupportsCancellation = true;
-            
+           // backgroundWorker1.WorkerSupportsCancellation = true;            
         }
         /// <summary>
         /// Method for adding event handlers to the background worker...
@@ -123,6 +122,10 @@ namespace HetsWare
         //
         //HetsMode Methods:
         //
+        /// <summary>
+        /// The Default mode, that will increment the e-mails sent daily by 1.
+        /// The method never stops but caps the number of e-mails at 150.
+        /// </summary>
         private int DefaultRecursion(int n,int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
 
             if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
@@ -139,6 +142,9 @@ namespace HetsWare
             Thread.Sleep(timeout);
             return DefaultRecursion(n + 1,total, SourceMail, Password, TargetMail, MailTitle, MailBody,  worker1, e);
         }
+        /// <summary>
+        /// The Fibonacci sequence progression that will work for 12 days then stop.
+        /// </summary>
         private void Fibonacci(int a, int b,int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             //Use 1, 1, 1, 12 when invoking because 12th call = 144 e-mails.
             for (int i = 0; i < a; i++) {
@@ -152,6 +158,10 @@ namespace HetsWare
             Thread.Sleep(timeout);
             if (counter < maxNumber) Fibonacci(b, a + b, total, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
+        /// <summary>
+        /// The Linear polynomial progression that will increment the number of e-mails daily count by the sum of itself.
+        /// The method never stops working but it caps the number of e-mails sent daily at 150.
+        /// </summary>
         private int Linear(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
 
             if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
@@ -167,6 +177,10 @@ namespace HetsWare
             Thread.Sleep(timeout);
             return Linear(n + n, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
+        /// <summary>
+        /// The Nuke mode that will send 150 e-mails as quickly as gmail allows without blocking the user for a couple hours.
+        /// This method stops after 150 e-mails.
+        /// </summary>
         private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             int total = 0;
             for (int i = 0; i < 150; i++) {
