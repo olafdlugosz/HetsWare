@@ -46,16 +46,16 @@ namespace HetsWare
             this.backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
             backgroundWorker1.DoWork +=
-                new DoWorkEventHandler(backgroundWorker1_DoWork);
+                new DoWorkEventHandler(BackgroundWorker1_DoWork);
             backgroundWorker1.ProgressChanged +=
                 new ProgressChangedEventHandler(
-            backgroundWorker1_ProgressChanged);
+            BackgroundWorker1_ProgressChanged);
 
         }
         /// <summary>
         /// Event handler for reporting progress...
         /// </summary>
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+        private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
                                
             resultLabel.Content = ("Number of e-mails per iteration: " + e.ProgressPercentage.ToString());
             TotalDisplayLabel.Content = ("Total number of e-mails sent: " + e.UserState.ToString());
@@ -66,7 +66,7 @@ namespace HetsWare
             /// </summary>
             /// <param name="sender"></param>
             /// <param name="e"></param>
-            private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
+            private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
             
             BackgroundWorker worker = sender as BackgroundWorker;
             List<object> asyncThreadPropertyList = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
