@@ -81,8 +81,8 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Label x:Name="resultLabel" Content="" HorizontalAlignment="Left" Margin="35,228,0,0" VerticalAlignment="Top" Width="250"/>
-        <Label x:Name="TotalDisplayLabel" Content="" HorizontalAlignment="Left" Margin="35,259,0,0" VerticalAlignment="Top" Width="247" RenderTransformOrigin="0.5,0.5">
+        <Label x:Name="resultLabel" Content="Number of e-mails per iteration:" HorizontalAlignment="Left" Margin="35,228,0,0" VerticalAlignment="Top" Width="250"/>
+        <Label x:Name="TotalDisplayLabel" Content="Total number of e-mails sent:" HorizontalAlignment="Left" Margin="35,259,0,0" VerticalAlignment="Top" Width="247" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

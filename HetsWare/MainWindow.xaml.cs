@@ -57,7 +57,7 @@ namespace HetsWare
         /// </summary>
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
                                
-            resultLabel.Content = ("Numbers of e-mails per iteration: " + e.ProgressPercentage.ToString());
+            resultLabel.Content = ("Number of e-mails per iteration: " + e.ProgressPercentage.ToString());
             TotalDisplayLabel.Content = ("Total number of e-mails sent: " + e.UserState.ToString());
         }
 
