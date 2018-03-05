@@ -116,16 +116,17 @@ namespace HetsWare
                 client.Send(SourceMail, TargetMail, MailTitle, MailBody);
             } catch (Exception) {
 
-                MessageBoxResult result = MessageBox.Show("Error...Have you enabled: Allow less secure apps in your gmail!?", "Confirmation");
+                MessageBoxResult result = MessageBox.Show("Error...Have you enabled: Allow less secure apps in your gmail!?..." +
+                    "Is is everything in the form correct?", "Confirmation");
             }           
         }
         //
         //HetsMode Methods:
         //
         private int DefaultRecursion(int n,int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
-            if (n == 0 && n == 150) //<---stops sending when 150 e-mails are reached.
-                return 1;
-            
+
+            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
+            if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             for (int i = 0; i < n; i++) {
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
@@ -152,9 +153,9 @@ namespace HetsWare
             if (counter < maxNumber) Fibonacci(b, a + b, total, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
         private int Linear(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
-            
-            if (n == 0 && n == 150)//<---stops sending when 150 e-mails are reached.
-                return 1;
+
+            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
+            if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             for (int i = 0; i < n; i++) {
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
