@@ -35,7 +35,7 @@ namespace HetsWare
         public MainWindow() {
             InitializeComponent();
             InitializeBackgroundWorker();
-            //TODO Implement cancelation...
+            //TODO Implement cancelation button...
            // backgroundWorker1.WorkerSupportsCancellation = true;
             
         }
@@ -167,10 +167,10 @@ namespace HetsWare
             return Linear(n + n, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
         private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
-            int counter = 0;
+            int total = 0;
             for (int i = 0; i < 150; i++) {
-                counter++;                
-                worker1.ReportProgress(i+1, counter);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
+                total++;                
+                worker1.ReportProgress(i+1, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, remember?
                 Thread.Sleep(interval);
