@@ -31,7 +31,6 @@
         <Label x:Name="MailBodyLabel" Content="Message Body:" HorizontalAlignment="Left" Margin="338,162,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <PasswordBox x:Name="PasswordTextBox" HorizontalAlignment="Left" Margin="438,78,0,0" VerticalAlignment="Top" Width="286" Height="23"/>
         <Label x:Name="HeaderLabel" Content="Turn on Allow Less Secure Apps at https://myaccount.google.com/lesssecureapps" HorizontalAlignment="Left" Margin="276,10,0,0" VerticalAlignment="Top" Width="448" Height="32"/>
-        <TextBlock x:Name="DisplayTextBlock" HorizontalAlignment="Left" Margin="30,279,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" Height="30"/>
         <RadioButton x:Name="DefaultRadioButton" Content="Default (Fn = n +1)" HorizontalAlignment="Left" Margin="26,73,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="15" Width="123" IsChecked="True">
             <RadioButton.RenderTransform>
                 <TransformGroup>
@@ -79,6 +78,17 @@
                     <SkewTransform/>
                     <RotateTransform Angle="-0.163"/>
                     <TranslateTransform X="-0.156" Y="0.044"/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="resultLabel" Content="" HorizontalAlignment="Left" Margin="35,228,0,0" VerticalAlignment="Top" Width="250"/>
+        <Label x:Name="TotalDisplayLabel" Content="" HorizontalAlignment="Left" Margin="35,259,0,0" VerticalAlignment="Top" Width="247" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.018"/>
+                    <TranslateTransform/>
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
