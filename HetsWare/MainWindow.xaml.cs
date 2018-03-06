@@ -136,7 +136,7 @@ namespace HetsWare
         private int DefaultRecursion(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody,
             BackgroundWorker worker1, DoWorkEventArgs e) {
 
-            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
+            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow if Zero is accidently used during invocation.
             if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             if (worker1.CancellationPending == true) { //<--Cancels the operation.
                 e.Cancel = true;
@@ -150,8 +150,8 @@ namespace HetsWare
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(1); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
-                Thread.Sleep(interval);
+                TimeSpan interval = TimeSpan.FromSeconds(3); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
+                Thread.Sleep(interval);                  //Be aware that this affects the restart of call = can't press deploy again untill interval is done.
             }
             if (worker1.CancellationPending == true) { //<--Cancels the operation.
                 e.Cancel = true;
@@ -161,13 +161,16 @@ namespace HetsWare
 
                 if (worker1.CancellationPending == true) {
                     e.Cancel = true;
+                    return 1;
                 }
                 Monitor.Wait(worker1, TimeSpan.FromDays(1));//<---Change TimeSpan if you want to
                 if (worker1.CancellationPending == true) {
                     e.Cancel = true;
+                    return 1;
                 }
             }
-            return DefaultRecursion(n + 1, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            if (worker1.CancellationPending != true) return DefaultRecursion(n + 1, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            else return 1;
         }
         /// <summary>
         /// The Fibonacci sequence progression that will work for 12 days then stop.
@@ -187,11 +190,12 @@ namespace HetsWare
                 total += a;
                 worker1.ReportProgress(a, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromSeconds(10);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
+                TimeSpan interval = TimeSpan.FromSeconds(2);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
             }
             if (worker1.CancellationPending == true) { //<--Cancels the operation.
-                e.Cancel = true;                
+                e.Cancel = true;
+                return 1;
             }
             lock (backgroundWorker1) {
 
@@ -216,7 +220,7 @@ namespace HetsWare
                 e.Cancel = true;
                 return 1;
             }
-            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
+            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow if Zero is accidently used during invocation.
             if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             for (int i = 0; i < n; i++) {
                 if (worker1.CancellationPending == true) { //<--Cancels the operation.
