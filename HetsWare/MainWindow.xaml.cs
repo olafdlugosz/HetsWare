@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
@@ -17,7 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.IO;
 namespace HetsWare
 {
     /// <summary>
@@ -242,6 +243,15 @@ namespace HetsWare
                     // Enable the Cancel button while 
                     // the asynchronous operation runs.
                     this.CancelButton.IsEnabled = true;
+
+                    //TODO Fix the soundplayer, it throws exceptions when referncing Environment.CurrentDirectory.
+                    //string filename = @"HetsWareDeployedSound.wav";
+                    //string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"Sounds\", filename);
+                    
+                    //using (var soundPlayer = new SoundPlayer(path)) {
+                    //    soundPlayer.Play(); 
+                    //}
+                    
                 }
             } catch (Exception) {
 

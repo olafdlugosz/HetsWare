@@ -94,7 +94,7 @@
         </Label>
         <Button x:Name="CancelButton" Content="Sluta Hetsa... =(" HorizontalAlignment="Left" Margin="564,271,0,0" VerticalAlignment="Top" Width="165" Height="30" Click="CancelButton_Click" IsEnabled="False"/>
         <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="30" Margin="35,199,0,0" VerticalAlignment="Top" Width="213" Maximum="149" RenderTransformOrigin="0.5,0.5"/>
-        <Label x:Name="ProgressLabel" Content="Tracking Progress: " HorizontalAlignment="Left" Margin="35,199,0,0" VerticalAlignment="Top" Height="31" Width="213"/>
+        <Label x:Name="ProgressLabel" Content="Tracking Progress: " HorizontalAlignment="Left" Margin="35,199,0,0" VerticalAlignment="Top" Height="31" Width="151"/>
 
     </Grid>
 </Window>
