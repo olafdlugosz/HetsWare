@@ -273,6 +273,14 @@ namespace HetsWare
                 Monitor.Pulse(backgroundWorker1);
             }
         }
+        private void PlaySound() {
+            string filename = @"HetsWareDeployedSound.wav";
+            string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\Sounds\", filename);
+
+            using (var soundPlayer = new SoundPlayer(path)) {
+                soundPlayer.Play();
+            }
+        }
         private void DeployButton_Click(object sender, RoutedEventArgs e) {
 
             List<object> arguments = new List<object>(){ //<---list of arguments to migrate to the asynchronous thread.
@@ -301,14 +309,8 @@ namespace HetsWare
                     // Enable the Cancel button while 
                     // the asynchronous operation runs.
                     this.CancelButton.IsEnabled = true;
-
-                    //TODO Fix the soundplayer, it throws exceptions when referncing Environment.CurrentDirectory.
-                    string filename = @"HetsWareDeployedSound.wav";
-                    string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\Sounds\", filename);
-
-                    using (var soundPlayer = new SoundPlayer(path)) {
-                        soundPlayer.Play();
-                    }
+                    //Play the "HetsWare Deployed" Sound
+                    PlaySound();
 
                 }
             } catch (Exception) {
