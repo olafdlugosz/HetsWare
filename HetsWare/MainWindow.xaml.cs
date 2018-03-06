@@ -262,6 +262,8 @@ namespace HetsWare
             TotalDisplayLabel.Content = ("Total number of e-mails sent: ");
             //Reset the progressBar
             this.progressBar.Value = 0;
+            //Reset the progress label
+            ProgressLabel.Content = ("Tracking progress: ");
 
         }
     }
