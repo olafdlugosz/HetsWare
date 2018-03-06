@@ -124,7 +124,7 @@ namespace HetsWare
             } catch (Exception) {
 
                 MessageBoxResult result = MessageBox.Show("Error...Have you enabled: Allow less secure apps in your gmail!?..." +
-                    "Is is everything in the form correct?", "Confirmation");
+                    "Is everything in the form correct?", "Confirmation");
             }
         }
         //
