@@ -64,7 +64,7 @@ namespace HetsWare
         }
         private double CalculatePercentageForProgressBar(double totalnumber) {
             double hundredpercent = 100;
-            double max = 150;  //<---You will need to change this if change the maximum number of e-mails in the HetsMode methods.
+            double max = 150;  //<---You will need to change this if you change the maximum number of e-mails in the HetsMode methods.
             double onepercent = hundredpercent / max;
             return onepercent * totalnumber;            
         }
@@ -303,7 +303,7 @@ namespace HetsWare
                 NukeRadioButton.IsChecked };
             try {
                 //Wake up the async thread in case it was sleeping. (I use monitor instead of ThreadSleep.
-                //Otherwise starting over with long timeouts, didn't correctly.)
+                //Otherwise starting over with long timeouts, didn't work correctly.)
                 WakeUpMonitor();
                 if (backgroundWorker1.IsBusy != true) {
                     // Start the asynchronous operation.
@@ -317,7 +317,6 @@ namespace HetsWare
                     this.CancelButton.IsEnabled = true;
                     //Play the "HetsWare Deployed" Sound
                     PlaySound();
-
                 }
             } catch (Exception) {
 
@@ -326,8 +325,7 @@ namespace HetsWare
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
-            // Cancel the asynchronous operation.
-            
+            // Cancel the asynchronous operation.           
             this.backgroundWorker1.CancelAsync();
             //Enable the DeployButton again
             DeployButton.IsEnabled = true;
