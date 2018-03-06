@@ -185,7 +185,7 @@ namespace HetsWare
             int total = 0;
             for (int i = 0; i < 150; i++) {
                 total++;                
-                worker1.ReportProgress(i+1, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
+                worker1.ReportProgress(1, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, remember?
                 Thread.Sleep(interval);
