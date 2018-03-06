@@ -124,7 +124,7 @@ namespace HetsWare
             } catch (Exception) {
 
                 MessageBoxResult result = MessageBox.Show("Error...Have you enabled: Allow less secure apps in your gmail!?..." +
-                    "Is everything in the form correct?", "Confirmation");
+                    "Is everything in the form correct?", "Error");
             }
         }
         //
@@ -275,11 +275,16 @@ namespace HetsWare
             }
         }
         private void PlaySound() {
-            string filename = @"HetsWareDeployedSound.wav";
-            string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\Sounds\", filename);
-
-            using (var soundPlayer = new SoundPlayer(path)) {
-                soundPlayer.Play();
+            try {
+                if (SoundCheckBox.IsChecked == true) {
+                    string filename = @"HetsWareDeployedSound.wav";
+                    string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\Sounds\", filename);
+                    using (var soundPlayer = new SoundPlayer(path)) {
+                        soundPlayer.Play();
+                    }
+                }
+            } catch (Exception) {
+                MessageBoxResult result = MessageBox.Show("Something wrong with the SoundPlayer..it'll probably work anyways.", "SoundPlayer Error");
             }
         }
         private void DeployButton_Click(object sender, RoutedEventArgs e) {
@@ -316,7 +321,7 @@ namespace HetsWare
                 }
             } catch (Exception) {
 
-                MessageBoxResult result = MessageBox.Show("You have to fill in the form", "Confirmation");
+                MessageBoxResult result = MessageBox.Show("You have to fill in the form", "Warning");
             }
         }
 
