@@ -42,7 +42,6 @@ namespace HetsWare
         private void InitializeBackgroundWorker() {
             this.backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
-            backgroundWorker1.WorkerSupportsCancellation = true;
             backgroundWorker1.DoWork +=
                 new DoWorkEventHandler(BackgroundWorker1_DoWork);
             backgroundWorker1.ProgressChanged +=
@@ -68,18 +67,18 @@ namespace HetsWare
             
             BackgroundWorker worker = sender as BackgroundWorker;
             List<object> asyncThreadPropertyList = e.Argument as List<object>; //<---Properites sent from the main thread via DoWorkEventArgs e.
+            //Properties from Textboxes.
             string sourcemail = asyncThreadPropertyList[0].ToString();
             string password = asyncThreadPropertyList[1].ToString();
             string targetmail = asyncThreadPropertyList[2].ToString();
             string mailtitle = asyncThreadPropertyList[3].ToString();
             string mailbody = asyncThreadPropertyList[4].ToString();
-            bool defaultRecursion = Convert.ToBoolean(asyncThreadPropertyList[5]); // <-- Radiobutton Boolean values.
+            //Radiobutton Boolean values.
+            bool defaultRecursion = Convert.ToBoolean(asyncThreadPropertyList[5]); 
             bool fibonacci = Convert.ToBoolean(asyncThreadPropertyList[6]);
             bool linear = Convert.ToBoolean(asyncThreadPropertyList[7]);
             bool nuke = Convert.ToBoolean(asyncThreadPropertyList[8]);
-
             
-
             if (worker.CancellationPending == true) {
                 e.Cancel = true;              
             }
@@ -212,16 +211,18 @@ namespace HetsWare
         }
             private void DeployButton_Click(object sender, RoutedEventArgs e) {
 
-            List<object>arguments = new List<object>(); //<---list of arguments to migrate to the asynchronous thread.
-            arguments.Add(SourceMail);
-            arguments.Add(Password);
-            arguments.Add(TargetMail);
-            arguments.Add(MailTitle);
-            arguments.Add(MailBody);
-            arguments.Add(DefaultRadioButton.IsChecked);
-            arguments.Add(FibonacciRadioButton.IsChecked);
-            arguments.Add(LinearRadioButton.IsChecked);
-            arguments.Add(NukeRadioButton.IsChecked);
+            List<object> arguments = new List<object>(){ //<---list of arguments to migrate to the asynchronous thread.
+                //Textbox Properties
+                SourceMail,
+                Password,
+                TargetMail,
+                MailTitle,
+                MailBody,
+                //Radiobutton boolean values
+                DefaultRadioButton.IsChecked, 
+                FibonacciRadioButton.IsChecked,
+                LinearRadioButton.IsChecked,
+                NukeRadioButton.IsChecked };
             try {                    
                 if (backgroundWorker1.IsBusy != true) {
                     // Start the asynchronous operation.
