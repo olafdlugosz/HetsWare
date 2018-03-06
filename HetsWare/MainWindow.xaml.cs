@@ -54,8 +54,8 @@ namespace HetsWare
         /// </summary>
         private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
 
-            //Event variable name is misleading. e.ProgressPercentage is overriden with N of mails per iteration
-            resultLabel.Content = ("Number of e-mails per iteration: " + e.ProgressPercentage.ToString()); 
+            //Event variable name is misleading. e.ProgressPercentage is overriden with N of mails per invocation
+            resultLabel.Content = ("Number of e-mails per invocation: " + e.ProgressPercentage.ToString()); 
             TotalDisplayLabel.Content = ("Total number of e-mails sent: " + e.UserState.ToString());
             double totalNumber = Convert.ToDouble(e.UserState);
             this.progressBar.Value = totalNumber;
@@ -149,7 +149,7 @@ namespace HetsWare
                     break;
                 }
                 total += n;
-                worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
+                worker1.ReportProgress(n, total); //<-- sends number of e-mails per invocation + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(3); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);                  //Be aware that this affects the restart of call = can't press deploy again untill interval is done.
@@ -189,7 +189,7 @@ namespace HetsWare
                     break;
                 }
                 total += a;
-                worker1.ReportProgress(a, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.
+                worker1.ReportProgress(a, total);  //<-- sends number of e-mails per invocation + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
@@ -229,7 +229,7 @@ namespace HetsWare
                     break;
                 }
                 total += n;
-                worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
+                worker1.ReportProgress(n, total); //<-- sends number of e-mails per invocation + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- Prevents going over the 60 per minute limit. If you change this, don't go under 1.5seconds.
                 Thread.Sleep(interval);
@@ -263,7 +263,7 @@ namespace HetsWare
                     break;
                 }
                 total++;
-                worker1.ReportProgress(1, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
+                worker1.ReportProgress(1, total);  //<-- sends number of e-mails per invocation + total to the view through an event handler.              
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
                 TimeSpan interval = TimeSpan.FromSeconds(2); //<--- 60 mails per minute, remember?
                 Thread.Sleep(interval);
@@ -330,7 +330,7 @@ namespace HetsWare
             // Disable the Cancel button.
             CancelButton.IsEnabled = false;
             //Reset the label content
-            resultLabel.Content = ("Number of e-mails per iteration: ");
+            resultLabel.Content = ("Number of e-mails per invocation: ");
             TotalDisplayLabel.Content = ("Total number of e-mails sent: ");
             //Reset the progressBar
             this.progressBar.Value = 0;
