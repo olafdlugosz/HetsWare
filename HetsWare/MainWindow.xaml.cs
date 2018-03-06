@@ -303,13 +303,13 @@ namespace HetsWare
                     this.CancelButton.IsEnabled = true;
 
                     //TODO Fix the soundplayer, it throws exceptions when referncing Environment.CurrentDirectory.
-                    //string filename = @"HetsWareDeployedSound.wav";
-                    //string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"Sounds\", filename);
-                    
-                    //using (var soundPlayer = new SoundPlayer(path)) {
-                    //    soundPlayer.Play(); 
-                    //}
-                    
+                    string filename = @"HetsWareDeployedSound.wav";
+                    string path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\Sounds\", filename);
+
+                    using (var soundPlayer = new SoundPlayer(path)) {
+                        soundPlayer.Play();
+                    }
+
                 }
             } catch (Exception) {
 
