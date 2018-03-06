@@ -34,15 +34,14 @@ namespace HetsWare
 
         public MainWindow() {
             InitializeComponent();
-            InitializeBackgroundWorker();
-            //TODO Implement cancelation button...
-           // backgroundWorker1.WorkerSupportsCancellation = true;            
+            InitializeBackgroundWorker();         
         }
         /// <summary>
         /// Method for adding event handlers to the background worker...
         /// </summary>
         private void InitializeBackgroundWorker() {
             this.backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
             backgroundWorker1.DoWork +=
                 new DoWorkEventHandler(BackgroundWorker1_DoWork);
@@ -126,11 +125,16 @@ namespace HetsWare
         /// The Default mode, that will increment the e-mails sent daily by 1.
         /// The method never stops but caps the number of e-mails at 150.
         /// </summary>
-        private int DefaultRecursion(int n,int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private int DefaultRecursion(int n,int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody,
+            BackgroundWorker worker1, DoWorkEventArgs e) {
 
-            if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
+                if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
             if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             for (int i = 0; i < n; i++) {
+                if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                    e.Cancel = true;
+                    break;
+                }
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
@@ -145,9 +149,14 @@ namespace HetsWare
         /// <summary>
         /// The Fibonacci sequence progression that will work for 12 days then stop.
         /// </summary>
-        private void Fibonacci(int a, int b,int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private void Fibonacci(int a, int b,int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail,
+            string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             //Use 1, 1, 1, 12 when invoking because 12th call = 144 e-mails.
             for (int i = 0; i < a; i++) {
+                if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                    e.Cancel = true;
+                    break;
+                }
                 total += a;
                 worker1.ReportProgress(a, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
@@ -162,11 +171,16 @@ namespace HetsWare
         /// The Linear polynomial progression that will increment the number of e-mails daily count by the sum of itself.
         /// The method never stops working but it caps the number of e-mails sent daily at 150.
         /// </summary>
-        private int Linear(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private int Linear(int n, int total, string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody,
+            BackgroundWorker worker1, DoWorkEventArgs e) {
 
             if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
             if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
             for (int i = 0; i < n; i++) {
+                if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                    e.Cancel = true;
+                    break;
+                }
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
@@ -181,9 +195,14 @@ namespace HetsWare
         /// The Nuke mode that will send 150 e-mails as quickly as gmail allows without blocking the user for a couple hours.
         /// This method stops after 150 e-mails.
         /// </summary>
-        private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
+        private void Nuke(string SourceMail, string Password, string TargetMail, string MailTitle, string MailBody,
+            BackgroundWorker worker1, DoWorkEventArgs e) {
             int total = 0;
             for (int i = 0; i < 150; i++) {
+                if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                    e.Cancel = true;
+                    break;
+                }
                 total++;                
                 worker1.ReportProgress(1, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.              
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
@@ -211,11 +230,28 @@ namespace HetsWare
                     // the asynchronous operation is done.
                     this.DeployButton.IsEnabled = false;
                     this.DeployButton.Content = "HetsWare Deployed...";
+                    // Enable the Cancel button while 
+                    // the asynchronous operation runs.
+                    this.CancelButton.IsEnabled = true;
                 }
             } catch (Exception) {
                     
                     MessageBoxResult result = MessageBox.Show("You have to fill in the form", "Confirmation");
                 }            
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e) {
+            // Cancel the asynchronous operation.
+            this.backgroundWorker1.CancelAsync();
+            //Enable the DeployButton again
+            DeployButton.IsEnabled = true;
+            this.DeployButton.Content = "Börja Hetsa!";
+            // Disable the Cancel button.
+            CancelButton.IsEnabled = false;
+            //Reset the label content
+            resultLabel.Content = ("Number of e-mails per iteration: ");
+            TotalDisplayLabel.Content = ("Total number of e-mails sent: ");         
+            
         }
     }
 }

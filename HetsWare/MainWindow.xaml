@@ -23,7 +23,7 @@
         <TextBox x:Name="TargetMailTextBox" HorizontalAlignment="Left" Height="23" Margin="438,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
         <TextBox x:Name="MailTitleTextBox" HorizontalAlignment="Left" Height="23" Margin="438,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
         <TextBox x:Name="MailBodyTextBox" HorizontalAlignment="Left" Height="88" Margin="438,162,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
-        <Button x:Name="DeployButton" Content="Börja Hetsa!" HorizontalAlignment="Left" Margin="559,268,0,0" VerticalAlignment="Top" Width="165" Height="30" Click="DeployButton_Click" ClickMode="Press"/>
+        <Button x:Name="DeployButton" Content="Börja Hetsa!" HorizontalAlignment="Left" Margin="394,271,0,0" VerticalAlignment="Top" Width="165" Height="30" Click="DeployButton_Click" ClickMode="Press"/>
         <Label x:Name="SourceMailLabel" Content="Your gmail:" HorizontalAlignment="Left" Margin="338,47,0,0" VerticalAlignment="Top" Width="74" Height="26"/>
         <Label x:Name="PasswordLabel" Content="Your Password:" HorizontalAlignment="Left" Margin="338,78,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <Label x:Name="TargetMailLabel" Content="Target e-mail:" HorizontalAlignment="Left" Margin="338,111,0,0" VerticalAlignment="Top" Height="26" Width="82"/>
@@ -92,6 +92,7 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <Button x:Name="CancelButton" Content="Sluta Hetsa... =(" HorizontalAlignment="Left" Margin="564,271,0,0" VerticalAlignment="Top" Width="165" Height="30" Click="CancelButton_Click" IsEnabled="False"/>
 
     </Grid>
 </Window>
