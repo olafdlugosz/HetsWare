@@ -138,6 +138,10 @@ namespace HetsWare
 
             if (n == 0) { return 1; }; // <--Prevents potential StackOverflow.
             if (n >= 150) { n = 150; }; //<---Caps the call at 150 e-mails.
+            if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                e.Cancel = true;
+                return 1;
+            }
             for (int i = 0; i < n; i++) {
                 if (worker1.CancellationPending == true) { //<--Cancels the operation.
                     e.Cancel = true;
@@ -146,20 +150,35 @@ namespace HetsWare
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(3); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
+                TimeSpan interval = TimeSpan.FromMinutes(1); //<---If you change this, don't go under 1.5 seconds... Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
             }
+            if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                e.Cancel = true;
+                return 1;
+            }
+            lock (backgroundWorker1) {
 
-            TimeSpan timeout = TimeSpan.FromDays(1);   //change timeout if you want to...
-            Thread.Sleep(timeout);
+                if (worker1.CancellationPending == true) {
+                    e.Cancel = true;
+                }
+                Monitor.Wait(worker1, TimeSpan.FromDays(1));//<---Change TimeSpan if you want to
+                if (worker1.CancellationPending == true) {
+                    e.Cancel = true;
+                }
+            }
             return DefaultRecursion(n + 1, total, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
         }
         /// <summary>
         /// The Fibonacci sequence progression that will work for 12 days then stop.
         /// </summary>
-        private void Fibonacci(int a, int b, int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail,
+        private int Fibonacci(int a, int b, int total, int counter, int maxNumber, string SourceMail, string Password, string TargetMail,
             string MailTitle, string MailBody, BackgroundWorker worker1, DoWorkEventArgs e) {
             //Use 1, 1, 1, 12 when invoking because 12th call = 144 e-mails.
+            if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                e.Cancel = true;
+                return 1;
+            }
             for (int i = 0; i < a; i++) {
                 if (worker1.CancellationPending == true) { //<--Cancels the operation.
                     e.Cancel = true;
@@ -168,12 +187,24 @@ namespace HetsWare
                 total += a;
                 worker1.ReportProgress(a, total);  //<-- sends number of e-mails per iteration + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromMinutes(3);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
+                TimeSpan interval = TimeSpan.FromSeconds(10);  //<--If you change this, don't go under 1.5 seconds.. Gmail allows only 60 e-mails per minute.
                 Thread.Sleep(interval);
             }
-            TimeSpan timeout = TimeSpan.FromDays(1);  //change timeout if you want to...
-            Thread.Sleep(timeout);
-            if (counter < maxNumber) Fibonacci(b, a + b, total, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            if (worker1.CancellationPending == true) { //<--Cancels the operation.
+                e.Cancel = true;                
+            }
+            lock (backgroundWorker1) {
+
+                if (worker1.CancellationPending == true) {
+                    e.Cancel = true;
+                }
+                Monitor.Wait(worker1, TimeSpan.FromDays(1));//<---Change TimeSpan if you want to
+                if (worker1.CancellationPending == true) {
+                    e.Cancel = true;
+                }
+            }
+            if (counter < maxNumber) return Fibonacci(b, a + b, total, counter + 1, maxNumber, SourceMail, Password, TargetMail, MailTitle, MailBody, worker1, e);
+            else return 1;
         }
         /// <summary>
         /// The Linear polynomial progression that will increment the number of e-mails daily count by the sum of itself.
@@ -207,7 +238,7 @@ namespace HetsWare
                 if (worker1.CancellationPending == true) {
                     e.Cancel = true;
                 }
-                Monitor.Wait(worker1, TimeSpan.FromDays(1));
+                Monitor.Wait(worker1, TimeSpan.FromDays(1));//<---Change TimeSpan if you want to
                 if (worker1.CancellationPending == true) {
                     e.Cancel = true;
                 }
@@ -233,6 +264,11 @@ namespace HetsWare
                 Thread.Sleep(interval);
             }
         }
+        private void WakeUpMonitor() {
+            lock (backgroundWorker1) {
+                Monitor.Pulse(backgroundWorker1);
+            }
+        }
         private void DeployButton_Click(object sender, RoutedEventArgs e) {
 
             List<object> arguments = new List<object>(){ //<---list of arguments to migrate to the asynchronous thread.
@@ -248,10 +284,9 @@ namespace HetsWare
                 LinearRadioButton.IsChecked,
                 NukeRadioButton.IsChecked };
             try {
-                //Wake up the async thread in case it was sleeping. (I use monitor instead of ThreadSleep. Otherwise starting over, didn't work.)
-                lock (backgroundWorker1) {
-                    Monitor.Pulse(backgroundWorker1);
-                }
+                //Wake up the async thread in case it was sleeping. (I use monitor instead of ThreadSleep.
+                //Otherwise starting over with long timeouts, didn't correctly.)
+                WakeUpMonitor();
                 if (backgroundWorker1.IsBusy != true) {
                     // Start the asynchronous operation.
                     backgroundWorker1.RunWorkerAsync(arguments); //<--- Injecting properties to the asyc thread.
