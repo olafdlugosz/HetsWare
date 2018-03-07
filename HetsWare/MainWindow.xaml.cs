@@ -231,7 +231,7 @@ namespace HetsWare
                 total += n;
                 worker1.ReportProgress(n, total); //<-- sends number of e-mails per invocation + total to the view through an event handler.
                 DeployHetsWare(SourceMail, Password, TargetMail, MailTitle, MailBody);
-                TimeSpan interval = TimeSpan.FromSeconds(3); //<--- Prevents going over the 60 per minute limit. If you change this, don't go under 1.5seconds.
+                TimeSpan interval = TimeSpan.FromSeconds(2); //<--- Prevents going over the 60 per minute limit. If you change this, don't go under 1.5seconds.
                 Thread.Sleep(interval);
             }
             if (worker1.CancellationPending == true) { //<--Cancels the operation.
